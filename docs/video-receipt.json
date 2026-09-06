@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "file": "demo.webm",
+  "sha256": "46930bcc7153ea18374f51b11a93bda54751d1e138fd860cddbd8ccabf58aba1",
+  "bytes": 1129996,
+  "capture": {
+    "method": "CUA tab CDP Page.startScreencast (JPEG), every received frame retained",
+    "startedAt": "2026-09-06T21:35:47.195Z",
+    "endedAt": "2026-09-06T21:38:58.088Z",
+    "frameCount": 159,
+    "firstFrameTimestamp": 1788730547.260312,
+    "lastFrameTimestamp": 1788730737.790561,
+    "durationSeconds": 190.8276879787445,
+    "width": 1280,
+    "height": 720,
+    "cadence": "Browser paint-driven, mostly approximately one frame per second from the visible UTC clock; actual timestamp intervals preserved",
+    "frameCuts": 0,
+    "speedChanges": 0,
+    "syntheticScenes": 0,
+    "audio": false
+  },
+  "encoding": {
+    "codec": "VP8",
+    "container": "WebM",
+    "timeline": "Variable frame timestamps from original CDP capture; final frame held until capture ended"
+  },
+  "observed": {
+    "seedPid": 26048,
+    "freshRecallPid": 31384,
+    "sameMissionRecalled": true,
+    "evidenceChangedDecision": true,
+    "humanGate": "HOLD_HUMAN",
+    "unknownAction": "UNKNOWN_ACTION",
+    "withoutMemory": "MEMORY_REQUIRED"
+  },
+  "claims": {
+    "memoryMode": "Real local Sibyl SDK and SQLite",
+    "scenario": "SYNTHETIC",
+    "pmfBonus": 0,
+    "partnerMultiplier": 1.0,
+    "externalActions": false
+  },
+  "validation": {
+    "browserReadyState": 4,
+    "browserDurationSeconds": 190.88,
+    "videoWidth": 1280,
+    "videoHeight": 720,
+    "mediaError": null,
+    "playbackConfirmed": true,
+    "decodedFramesVisuallyInspectedSeconds": [
+      55,
+      125,
+      180
+    ],
+    "observedScenes": [
+      "cold process recalls mission",
+      "remembered evidence permits record_demo",
+      "deleted memory returns MEMORY_REQUIRED"
+    ]
+  }
+}

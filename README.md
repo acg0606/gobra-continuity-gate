@@ -2,6 +2,8 @@
 
 An action gate for long-running AI work. A fresh agent session recalls the mission, evidence, human approvals, and forbidden actions from **Sibyl Memory** before deciding what it may do next.
 
+[Watch the continuous 3-minute demonstration](https://acg0606.github.io/gobra-continuity-gate/demo.html). The recording shows real local SDK execution across separate Python processes with a synthetic case. [Capture provenance](docs/video-receipt.json) records timestamps, the file hash and the observed outcomes.
+
 ## Why memory is load-bearing
 
 The product's core function is safe continuity across sessions. The policy is not bundled into the evaluator and there is no permissive fallback:
