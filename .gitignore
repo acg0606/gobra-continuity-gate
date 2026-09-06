@@ -1,0 +1,9 @@
+.continuity/
+vendor/
+__pycache__/
+*.pyc
+.pytest_cache/
+.recording/
+.env
+.env.*
+*.log

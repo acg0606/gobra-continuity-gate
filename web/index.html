@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GoBRA Continuity Gate</title>
+  <style>
+    :root{color-scheme:dark;--ink:#f7f5ef;--muted:#9aa4a6;--panel:#101719;--line:#243336;--acid:#b5ff3d;--cyan:#3de8d4;--red:#ff6a78;--amber:#ffc857}
+    *{box-sizing:border-box} body{margin:0;background:#070b0d;color:var(--ink);font:15px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 80% 10%,#15333a88,transparent 32%),linear-gradient(#ffffff05 1px,transparent 1px);background-size:auto,100% 28px}
+    main{position:relative;max-width:1180px;margin:auto;padding:42px 24px 70px}.eyebrow{color:var(--acid);letter-spacing:.17em;text-transform:uppercase;font-size:12px}
+    h1{font:700 clamp(38px,7vw,78px)/.95 system-ui,sans-serif;letter-spacing:-.055em;margin:12px 0 18px;max-width:850px}.lead{max-width:760px;color:#b9c4c6;font:19px/1.6 system-ui,sans-serif}
+    .bar{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0}.pill{border:1px solid var(--line);background:#0c1214;padding:8px 12px;border-radius:99px;color:var(--muted)}.pill strong{color:var(--cyan)}
+    .grid{display:grid;grid-template-columns:1.35fr .85fr;gap:18px}@media(max-width:800px){.grid{grid-template-columns:1fr}}
+    .card{background:linear-gradient(145deg,#11191bdd,#0a1012ee);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 18px 60px #0008}.card h2{font:650 20px system-ui,sans-serif;margin:0 0 8px}.card p{color:var(--muted)}
+    .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:24px 0}@media(max-width:650px){.flow{grid-template-columns:1fr 1fr}}.step{padding:13px 10px;border:1px solid var(--line);border-radius:10px;text-align:center;color:var(--muted)}.step.active{border-color:var(--cyan);color:var(--cyan);box-shadow:inset 0 0 18px #3de8d412}
+    button{font:700 12px/1 ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:#121c1f;color:var(--ink);cursor:pointer}button:hover{border-color:var(--cyan)}button.primary{background:var(--acid);color:#071005;border-color:var(--acid)}button.danger{border-color:#61333a;color:#ff9ca7}.actions{display:flex;gap:9px;flex-wrap:wrap}
+    .result{min-height:248px;margin-top:18px;padding:18px;border-radius:12px;background:#050809;border:1px solid #1a2528;white-space:pre-wrap;overflow:auto;color:#bfd0d3}.verdict{font:750 30px/1 system-ui,sans-serif;margin:12px 0}.ALLOW_LOCAL{color:var(--acid)}.HOLD_HUMAN{color:var(--amber)}.NEED_EVIDENCE,.MEMORY_REQUIRED{color:var(--red)}
+    .metric{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}.metric span{color:var(--muted)}.metric b{color:var(--cyan)}.note{border-left:3px solid var(--acid);padding:10px 14px;background:#b5ff3d0b;color:#cfd8d9;margin-top:18px}
+    footer{color:#708084;margin-top:24px;font-size:12px}
+    @media(min-width:1000px) and (max-height:850px){main{padding:20px 24px}h1{font-size:42px;max-width:none;margin:8px 0}.lead{font-size:16px;max-width:none;margin:8px 0}.bar{margin:14px 0}.card{padding:16px}.flow{margin:12px 0}.result{height:220px;min-height:0;font-size:12px}.verdict{font-size:25px;margin:10px 0}.metric{padding:10px 0}footer{margin-top:12px}}
+  </style>
+</head>
+<body><main>
+  <div class="eyebrow">GoBRA / Sibyl Labs Hackathon</div>
+  <h1>Continuity that survives a cold start.</h1>
+  <p class="lead">A fresh agent session recalls the mission, evidence and human boundaries before it acts. Remove Sibyl Memory and the gate stops the agent instead of guessing.</p>
+  <div class="bar"><span class="pill"><strong>LOCAL_VERIFIED</strong> Sibyl SDK</span><span class="pill"><strong>FAIL_CLOSED</strong> safety mode</span><span class="pill"><strong>DEMO</strong> no external actions</span></div>
+  <div class="grid">
+    <section class="card">
+      <h2>Fresh-session recall lab</h2><p>Each request starts a new Python process. Only Sibyl Memory carries the policy and evidence across sessions.</p>
+      <p id="clock" style="color:var(--cyan)"></p>
+      <div class="flow"><div class="step active">1. RECALL</div><div class="step">2. EVALUATE</div><div class="step">3. GATE</div><div class="step">4. JOURNAL</div></div>
+      <div class="actions">
+        <button class="primary" data-op="seed">Seed case</button>
+        <button data-action="prepare_local_draft">Safe local draft</button>
+        <button data-action="record_demo">Evidence gate</button>
+        <button data-op="evidence">Remember demo proof</button>
+        <button data-action="submit">Human gate</button>
+        <button data-action="unlisted_operation">Unknown action</button>
+        <button class="danger" data-op="delete">Deletion test</button>
+      </div>
+      <div id="verdict" class="verdict MEMORY_REQUIRED">MEMORY_REQUIRED</div>
+      <div id="process-proof" style="font-size:12px;color:var(--cyan)"></div>
+      <pre id="result" class="result">Seed the case to write the operating policy into Sibyl Memory.</pre>
+    </section>
+    <aside class="card">
+      <h2>Why memory is load-bearing</h2>
+      <div class="metric"><span>Cold-start recall</span><b>REQUIRED</b></div>
+      <div class="metric"><span>Policy fallback</span><b>NONE</b></div>
+      <div class="metric"><span>Missing memory</span><b>STOP</b></div>
+      <div class="metric"><span>External effect</span><b>FALSE</b></div>
+      <div class="note">The action policy lives in Sibyl's WARM tier. Evidence is recalled across sessions and changes the verdict. The journal preserves what was evaluated and why.</div>
+    </aside>
+  </div>
+  <footer>Local SDK execution · synthetic demonstration case · PMF bonus claimed: 0 · partner multiplier: 1.0 · no external actions</footer>
+</main>
+<script>
+const result=document.querySelector('#result'), verdict=document.querySelector('#verdict');
+function updateClock(){document.querySelector('#clock').textContent='Recording clock · '+new Date().toISOString()}updateClock();setInterval(updateClock,1000);
+function show(data){const v=data.verdict||data.verdict_without_memory||(data.safety_mode?'RECALLED':'READY');verdict.textContent=v;verdict.className='verdict '+v;document.querySelector('#process-proof').textContent=data.process?'Fresh process PID '+data.process.pid+' · '+data.process.utc:'';result.textContent=JSON.stringify(data,null,2)}
+async function call(path,body={}){result.textContent='Recalling from Sibyl Memory…';const r=await fetch(path,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});show(await r.json())}
+document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>call('/api/evaluate',{action:b.dataset.action}));
+document.querySelector('[data-op=seed]').onclick=()=>call('/api/seed');
+document.querySelector('[data-op=delete]').onclick=()=>call('/api/deletion-test');
+document.querySelector('[data-op=evidence]').onclick=()=>call('/api/evidence',{key:'working_demo',value:'Synthetic demo fixture: verified local demonstration'});
+fetch('/api/status').then(r=>r.json()).then(show);
+</script></body></html>
